@@ -23,35 +23,17 @@
 <script>
 import PostForm from '@/components/PostForm.vue';
 import PostList from '@/components/PostList.vue';
+import MyButton from '@/components/UI/MyButton.vue';
+import axios from 'axios'
 export default {
     components: {
         PostList,
-        PostForm
+        PostForm,
+        MyButton
     },
     data() {
         return {
-            posts: [
-                {
-                    id: 1,
-                    title: 'JavaScript',
-                    body: 'Описание поста'
-                },
-                {
-                    id: 2,
-                    title: 'JavaScript 2',
-                    body: 'Описание поста 2'
-                },
-                {
-                    id: 3,
-                    title: 'JavaScript 3',
-                    body: 'Описание поста 3'
-                },
-                {
-                    id: 4,
-                    title: 'JavaScript 4',
-                    body: 'Описание поста 4'
-                },
-            ],
+            posts: [],
             dialogVisible: false,
         }
     },
@@ -65,6 +47,14 @@ export default {
        },
        showDialog() {
         this.dialogVisible = true;
+       },
+       async fetchPosts() {
+            try {
+               const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+               this.posts = response.data; 
+            } catch (e) {
+                alert('Ошибка')
+            }
        }
     }
 }
