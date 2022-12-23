@@ -26,7 +26,7 @@
         />
         <div v-else>Идет загрузка...</div>
         <div v-intersection="loadMorePosts" class="observer"></div>
-        <!-- <div class="page__wrapper">
+        <div class="page__wrapper">
             <div 
                 v-for="pageNumber in totalPages" 
                 :key="pageNumber"
@@ -38,7 +38,7 @@
             >
                 {{ pageNumber }}
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -85,41 +85,10 @@ export default {
         // changePage(pageNumber) {
         //     this.page = pageNumber
         // },
-        async fetchPosts() {
-            try {
-                this.isPostsLoading = true;
-                const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
-                    params: {
-                        _page: this.page,
-                        _limit: this.limit
-                    }
-                });
-                this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
-                this.posts = response.data;
-            } catch (e) {
-                alert('Ошибка')
-            } finally {
-                this.isPostsLoading = false;
-            }
-        },
-        async loadMorePosts() {
-            try {
-                this.page += 1;
-                const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
-                    params: {
-                        _page: this.page,
-                        _limit: this.limit
-                    }
-                });
-                this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
-                this.posts = [...this.posts, ...response.data];
-            } catch (e) {
-                alert('Ошибка')
-            }
-        },
+        
     },
     mounted() {
-        this.fetchPosts();
+        // this.fetchPosts();
         console.log(this.$refs.observer);
         // const options = {
         //     rootMargin: '0px',
@@ -134,12 +103,7 @@ export default {
         // observer.observe(this.$refs.observer);
     },
     computed: {
-        sortedPosts() {
-            return [...this.posts].sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
-        },
-        sortedAndSearchedPosts() {
-            return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
-        }
+       
     },
     watch: {
         // page() {
