@@ -1,4 +1,4 @@
-
+import axios from 'axios'
 
 export const postModule = {
     state: () => ({
@@ -16,7 +16,7 @@ export const postModule = {
     }),
     getters: {
         sortedPosts(state) {
-            return [state.posts].sort((post1, post2) => post1[state.selectedSort]?.localeCompare(post2[state.selectedSort]))
+            return [...state.posts].sort((post1, post2) => post1[state.selectedSort]?.localeCompare(post2[state.selectedSort]))
         },
         sortedAndSearchedPosts(state, getters) {
             return getters.sortedPosts.filter(post => post.title.toLowerCase().includes(state.searchQuery.toLowerCase()))
@@ -53,10 +53,10 @@ export const postModule = {
                         _limit: state.limit
                     }
                 });
-                commit('setTotalPages'. Math.ceil(response.headers['x-total-count'] / state.limit))
+                commit('setTotalPages', Math.ceil(response.headers['x-total-count'] / state.limit))
                 commit('setPosts', response.data)
             } catch (e) {
-                alert('Ошибка')
+                console.log(e);
             } finally {
                 commit('setLoading', false);
             }
@@ -70,10 +70,10 @@ export const postModule = {
                         _limit: state.limit
                     }
                 });
-                commit('setTotalPages'. Math.ceil(response.headers['x-total-count'] / state.limit))
-                commit('setPosts', [...this.posts, ...response.data]);
+                commit('setTotalPages', Math.ceil(response.headers['x-total-count'] / state.limit))
+                commit('setPosts', [...state.posts, ...response.data]);
             } catch (e) {
-                alert('Ошибка')
+                console.log(e);
             }
         },
     },
